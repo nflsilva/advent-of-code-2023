@@ -31,7 +31,7 @@ int main()
     if(!input)
     {
         printf("Unable to read file\n");
-        return 1;
+        exit(EXIT_FAILURE);
     }
 
     // + 1 added to take care for edge case in which input doesn't have '\n' on last line
@@ -66,7 +66,6 @@ int main()
         if(c == '\n' || c == '\0') {
 
             lineBuff[lineBuffIndex - 1] =  '\0';
-            printf("%s %d %d\n", lineBuff, intcb, lineResult);
             lineBuffIndex = 0;
             intcb = 0;
 
@@ -130,8 +129,8 @@ int main()
         lineResult = intc;
 
     }
-    printf("Result: %d\n", totalResult);
 
-    printf("Done...");
-    return 0;
+    printf("\n\nResult: %d\n", totalResult);
+    printf("Done...\n");
+    exit(EXIT_SUCCESS);
 }

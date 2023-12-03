@@ -11,7 +11,7 @@ int main()
     if(!input)
     {
         printf("Unable to read file\n");
-        return 1;
+        exit(EXIT_FAILURE);
     }
 
     unsigned int totalResult = 0;
@@ -43,8 +43,8 @@ int main()
         lineResult = intc;
 
     }
-    printf("Result: %d\n", totalResult);
-
-    printf("Done...");
-    return 0;
+    
+    printf("\n\nResult: %d\n", totalResult);
+    printf("Done...\n");
+    exit(EXIT_SUCCESS);
 }

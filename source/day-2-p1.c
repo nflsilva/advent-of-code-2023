@@ -32,7 +32,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    unsigned int resultSum = 0;
+    unsigned int totalResult = 0;
     unsigned int gameId = 0;
 
     char* lineBuffer;
@@ -47,7 +47,7 @@ int main()
         if(gameId > 99) { lenProcessed++; }
         
         // add result by default
-        resultSum += gameId;
+        totalResult += gameId;
 
         // iterate over every game color
         int colorAmount = 0;
@@ -74,7 +74,7 @@ int main()
             // next game, next game
             if(colorAmount > maxForColor)
             {
-                resultSum -= gameId;
+                totalResult -= gameId;
                 break;
             }
 
@@ -86,6 +86,7 @@ int main()
     }
     fclose(file);
 
-    printf("\n\nResult: %d\n", resultSum);
+    printf("\n\nResult: %d\n", totalResult);
+    printf("Done...\n");
     exit(EXIT_SUCCESS);
 }

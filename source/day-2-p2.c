@@ -28,7 +28,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    unsigned int resultSum = 0;
+    unsigned int totalResult = 0;
     unsigned int gameId = 0;
 
     char* lineBuffer;
@@ -72,19 +72,17 @@ int main()
         } 
         while(lenProcessed < lenToProcess);
 
+        // compute the "power of cubes"
+        // add it to the result
         int power = 1;
         for(int i = 0; i < 3; i++)
             power *= nNeededPerColor[i];
-        resultSum += power;
-
-        printf("[%d %d %d = %d] %s", nNeededPerColor[0], nNeededPerColor[1], nNeededPerColor[2], power, lineBuffer);
-
+        totalResult += power;
     }
-
 
     fclose(file);
 
-    printf("\n\nResult: %d\n", resultSum);
-
+    printf("\n\nResult: %d\n", totalResult);
+    printf("Done...\n");
     exit(EXIT_SUCCESS);
 }
