@@ -22,10 +22,15 @@ int getColorMax(const char character)
     }
 }
 
-int main()
+int main(int argc, char** argv)
 {
-
-    FILE* file = fopen("resources/day-2-input.txt", "r");
+    if(argc < 2)
+    {
+        printf("No file provided");
+        exit(EXIT_FAILURE);
+    }
+    char* filePath = argv[1];
+    FILE* file = fopen(filePath, "r");
     if(!file)
     {
         printf("Unable to read file\n");
@@ -86,7 +91,7 @@ int main()
     }
     fclose(file);
 
-    printf("\n\nResult: %d\n", totalResult);
+    printf("Result: %d\n", totalResult);
     printf("Done...\n");
     exit(EXIT_SUCCESS);
 }

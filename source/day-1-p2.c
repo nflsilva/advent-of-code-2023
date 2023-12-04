@@ -24,10 +24,16 @@ spelled_number_t numbers[MAX_NUMBERS] = {
     {"nine", 4, 0}
 };
 
-int main()
+int main(int argc, char** argv)
 {
+    if(argc < 2)
+    {
+        printf("No file provided");
+        exit(EXIT_FAILURE);
+    }
+    char* filePath = argv[1];
 
-    const char* input = cutilFilesystemLoadFile("resources/day-1-input.txt");
+    const char* input = cutilFilesystemLoadFile(filePath);
     if(!input)
     {
         printf("Unable to read file\n");
@@ -130,7 +136,7 @@ int main()
 
     }
 
-    printf("\n\nResult: %d\n", totalResult);
+    printf("Result: %d\n", totalResult);
     printf("Done...\n");
     exit(EXIT_SUCCESS);
 }
