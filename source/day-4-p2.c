@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define TOTAL_WINNER_NUMBERS 10
+#define TOTAL_CARDS 204
+
 /**!
  * Scans line for the next number, incrementing the offset by the
  * appropriated amount
@@ -46,8 +49,9 @@ int main(int argc, char** argv)
     int totalResult = 0;
 
     // holds the numbers for the current scratchboard
-    int winningNumbers[10];
+    int winningNumbers[TOTAL_WINNER_NUMBERS];
     int winningNumbersIndex = 0;
+    int numberOfCards[TOTAL_CARDS] = { 0 };
 
     // holds the current line context
     char* lineBuffer = NULL;
@@ -55,11 +59,13 @@ int main(int argc, char** argv)
     unsigned int lenToProcess = 0;
 
     // for every line
+    int currentCardIndex = 0;
     while ((lenToProcess = getline(&lineBuffer, &lineLen, file)) != -1)
     {
-        // consume and discard the game id
+        numberOfCards[currentCardIndex]++;
+
+        // consume and discard the game number
         unsigned int lineOffset = 4;
-        int cardId = 0;
 
         // hack to discard card number
         while(lineBuffer[lineOffset] != ':')
@@ -78,8 +84,7 @@ int main(int argc, char** argv)
 
         // scan each scratchboard number
         // frute-force check if it's a winning number
-        int pointMultiplier = 1;
-        int pointsThisCard = 0;
+        int wonCardIndex = currentCardIndex + 1;
         while(lineOffset < lenToProcess)
         {
             // scan the next number
@@ -90,17 +95,21 @@ int main(int argc, char** argv)
                 if(winningNumbers[i] == scannedNumber)
                 {
                     // updates this card reward points
-                    pointsThisCard = pointMultiplier;
-                    pointMultiplier *= 2;
+                    numberOfCards[wonCardIndex] += numberOfCards[currentCardIndex];
+                    wonCardIndex++;
                 }
             }
         }
 
         // end of line
         // update result and reset counters
-        totalResult += pointsThisCard;
         winningNumbersIndex = 0;
+        currentCardIndex++;
     }
+
+    // compute final result by adding all the cards
+    for(int i = 0; i < TOTAL_CARDS; i++)
+        totalResult += numberOfCards[i];
 
     fclose(file);
     printf("Result: %d\n", totalResult);
