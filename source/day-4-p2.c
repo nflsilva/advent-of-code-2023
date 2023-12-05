@@ -94,7 +94,7 @@ int main(int argc, char** argv)
             {
                 if(winningNumbers[i] == scannedNumber)
                 {
-                    // updates this card reward points
+                    // updates this card count
                     numberOfCards[wonCardIndex] += numberOfCards[currentCardIndex];
                     wonCardIndex++;
                 }
