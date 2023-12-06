@@ -39,6 +39,7 @@ unsigned int readMap(FILE* file, unsigned long** map)
 */
 unsigned long computeDestinationFromSource(unsigned long source, unsigned long* map, unsigned int mapLength)
 {
+    //printf("%lu->", source);
     // destination should be the source if no mapping was found
     unsigned long destination = source;
     for(int i = 0; i < mapLength; i++)
@@ -83,10 +84,10 @@ int main(int argc, char** argv)
     fscanf(file, "seeds:");
 
     // read seeds and store in array
-    unsigned int nSeeds = 0;
-    unsigned long seeds[1024] = { 0 };
-    while(fscanf(file, " %d", &seeds[nSeeds]) == 1)
-        nSeeds++;
+    unsigned int nSeedRanges = 0;
+    unsigned long seedRanges[1024] = { 0 };
+    while(fscanf(file, " %d", &seedRanges[nSeedRanges]) == 1)
+        nSeedRanges++;
 
     // read maps into memory for easy access
     Map_t maps[N_MAPS];
@@ -96,20 +97,31 @@ int main(int argc, char** argv)
     // close file, as we don't need it anymore
     fclose(file);
 
-    for(int i = 0; i < nSeeds; i++)
+    for(int i = 0; i < nSeedRanges; i+=2)
     {
-        // for each seed
-        // cicle through the maps computing the destination for each source
-        // feeding the previous destination as source to the next computation
-        unsigned long source = seeds[i];
-        for(int i = 0; i < N_MAPS; i++)
-            source = computeDestinationFromSource(source, maps[i].table, maps[i].size);
+        // compute limites for the source
+        unsigned long seedStart = seedRanges[i];
+        unsigned long seedLength = seedRanges[i + 1];
+        unsigned long seedEnd = seedStart + seedLength;
 
-        // the last destination is the location we are looking for
-        // (and would be the source for the next map, if there was any more)
-        // check if this is the lowest location
-        if(totalResult == -1 || totalResult > source)
-            totalResult = source;
+        // for each seed range
+        for(int seed = seedStart; seed <= seedEnd; seed++)
+        {
+            // cicle through the maps computing the destination for each source
+            // feeding the previous destination as source to the next computation
+            unsigned long source = seed;
+            for(int i = 0; i < N_MAPS; i++)
+                source = computeDestinationFromSource(source, maps[i].table, maps[i].size);
+
+            //printf("%lu\n", source);
+
+            // the last destination is the location we are looking for
+            // (and would be the source for the next map, if there was any more)
+            // check if this is the lowest location
+            if(totalResult == -1 || totalResult > source)
+                totalResult = source;
+        }
+        
     }
 
     // cleanup

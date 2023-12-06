@@ -39,3 +39,5 @@ target_link_libraries(day-4-p2 ${LIBRARIES})
 
 add_executable(day-5-p1 source/day-5-p1.c)
 target_link_libraries(day-5-p1 ${LIBRARIES})
+add_executable(day-5-p2 source/day-5-p2.c)
+target_link_libraries(day-5-p2 ${LIBRARIES})
