@@ -82,8 +82,7 @@ int main(int argc, char** argv)
     // close the file. not needed anymore
     fclose(file);
 
-    // for each race, compute the range of winning plays 
-    // by solving the quadratic equation
+    // compute the range of winning plays by solving the quadratic equation
     double r0, r1;
     solveQuadraticEquation(-1, race.distance, -race.time, &r0, &r1);
     totalResult *= (int)(r1 - r0) + 1;
