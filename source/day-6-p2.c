@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#define N_RACES 4
+#define N_RACES 1
 
 /** Explanation
  * analysing the problem we can conclude that winning options
@@ -28,7 +28,7 @@
  * @param distance the max distance of the race
 */
 typedef struct {
-    int time, distance;
+    long long int time, distance;
 } Race_t;
 
 /**!
@@ -39,7 +39,12 @@ typedef struct {
  * @param r0 the first root result
  * @param r1 the second root result
 */
-void solveQuadraticEquation(int a, int b, int c, double* r0, double* r1)
+void solveQuadraticEquation(
+    long long int a, 
+    long long int b, 
+    long long int c, 
+    double* r0, 
+    double* r1)
 {
     double numerator = sqrt(b*b - 4 * a * c);
     double denominator = 2 * a;
@@ -57,8 +62,7 @@ int main(int argc, char** argv)
     char* filePath = argv[1];
     
     int totalResult = 1;
-    Race_t races[N_RACES];
-    int nRaces = N_RACES;
+    Race_t race;
 
     FILE* file = fopen(filePath, "r");
     if(!file)
@@ -70,22 +74,19 @@ int main(int argc, char** argv)
     // discard 'Time:'
     fscanf(file, "Time:");
     // read distances
-    fscanf(file, "%d %d %d %d\n", &(races[0].distance), &(races[1].distance), &(races[2].distance), &(races[3].distance));
+    fscanf(file, "%lld\n", &race.distance);
     // discard 'Distance:'
     fscanf(file, "Distance:");
     // read records 
-    fscanf(file, "%d %d %d %d\n", &(races[0].time), &(races[1].time), &(races[2].time), &(races[3].time));
+    fscanf(file, "%lld\n", &race.time);
     // close the file. not needed anymore
     fclose(file);
 
     // for each race, compute the range of winning plays 
     // by solving the quadratic equation
-    for(int i = 0; i < nRaces; i++)
-    {
-        double r0, r1;
-        solveQuadraticEquation(-1, races[i].distance, -races[i].time, &r0, &r1);
-        totalResult *= (int)(r1 - r0) + 1;
-    }
+    double r0, r1;
+    solveQuadraticEquation(-1, race.distance, -race.time, &r0, &r1);
+    totalResult *= (int)(r1 - r0) + 1;
 
     printf("Result: %d\n", totalResult);
     printf("Done...\n");
