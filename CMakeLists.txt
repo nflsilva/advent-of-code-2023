@@ -13,6 +13,7 @@ set(
 set(
     LIBRARIES
     cutil
+    m
 )
 
 include_directories(${INCLUDE_DIRS})
@@ -41,3 +42,6 @@ add_executable(day-5-p1 source/day-5-p1.c)
 target_link_libraries(day-5-p1 ${LIBRARIES})
 add_executable(day-5-p2 source/day-5-p2.c)
 target_link_libraries(day-5-p2 ${LIBRARIES})
+
+add_executable(day-6-p1 source/day-6-p1.c)
+target_link_libraries(day-6-p1 ${LIBRARIES})

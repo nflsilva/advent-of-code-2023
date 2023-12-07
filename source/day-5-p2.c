@@ -64,6 +64,7 @@ unsigned long computeDestinationFromSource(unsigned long source, unsigned long* 
 
 int main(int argc, char** argv)
 {
+    
     if(argc < 2)
     {
         printf("No file provided");
@@ -121,7 +122,6 @@ int main(int argc, char** argv)
             if(totalResult == -1 || totalResult > source)
                 totalResult = source;
         }
-        
     }
 
     // cleanup
