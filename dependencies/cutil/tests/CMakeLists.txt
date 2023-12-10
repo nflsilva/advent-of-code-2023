@@ -11,3 +11,6 @@ add_test(NAME FilesystemTests COMMAND filesystemTests)
 
 add_executable(mathTests math.c)
 add_test(NAME MathTests COMMAND mathTests)
+
+add_executable(sortTests sort.c)
+add_test(NAME SortTests COMMAND sortTests)

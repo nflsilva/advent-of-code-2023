@@ -7,6 +7,7 @@ set(CUTIL_SOURCES
   source/list.c
   source/filesystem.c
   source/math.c
+  source/sort.c
 )
 
 include_directories(include)

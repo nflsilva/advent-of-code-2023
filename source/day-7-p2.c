@@ -7,6 +7,8 @@
 #define N_CARDS_IN_HAND 5
 #define N_DIFFERENT_CARDS 14
 #define N_HANDS_MAX 1000
+#define PAIR_STRENGTH 10000000000ll
+#define OTHERS_STRENGTH 20000000000ll
 
 /**!
  * Represents a hand of cards.
@@ -43,6 +45,7 @@ int getCardValue(char label)
 {
     switch (label)
     {
+        case 'J': return 0;
         case '1':
         case '2':
         case '3':
@@ -52,13 +55,49 @@ int getCardValue(char label)
         case '7':
         case '8':
         case '9':
-            return label - '1';
-        case 'T': return 9;
-        case 'J': return 10;
+            return label - '0';
+        case 'T': return 10;
         case 'Q': return 11;
         case 'K': return 12;
         case 'A': return 13;
         default: return -1;
+    }
+}
+
+/**! 
+ *  Calculates the Hand strength based on the last number of cards
+ * 1 pair = 1 point 
+ * 2 pairs => 1 pair x 2 = 2 points
+ * 3 of a kind => 1 pair + another = 3 points
+ * full house 1 pair and 3 of a kind => 1 + 3 = 4 points
+ * 4 of a kind => 3 of a kind + 2 = 5 points
+ * 5 of a kind => 4 of a kind + 1 = 7 points
+ * 
+ *  @param hand the hand to compute the new strength value
+ *  @param cardValue the index for the card to use to compute the hand strength
+ *  @warning this function is `commulative`. It needs to be called each time the number 
+ * of cards is updated so the hard strenght is computed correctly. This is done so 
+ * this computation takes less time.
+*/
+void updateHandStrength(Hand_t* hand, int cardValue)
+{
+    switch (hand->nOfEachCard[cardValue])
+    {
+        case 2: 
+            hand->stength += PAIR_STRENGTH; 
+            break;    
+        case 3:
+        case 4:   
+        case 5:
+            // 1 pair = 1 point    
+            // 2 pairs => 1 pair x 2 = 2 points
+            // 3 of a kind => 1 pair + another = 3 points
+            // full house 1 pair and 3 of a kind => 1 + 3 = 4 points
+            // 4 of a kind => 3 of a kind + 2 = 5 points
+            // 5 of a kind => 4 of a kind + 1 = 7 points
+            hand->stength += OTHERS_STRENGTH;      
+        default:    
+            break;
     }
 }
 
@@ -86,34 +125,44 @@ int main(int argc, char** argv)
     do
     {
         Hand_t* hand = &hands[nHands];
+        int highestCardCountIndex = 0;
+        int highestCardCount = 0;
+        int nJokers = 0;
 
         // read cards and compute hand strength
         char card;
-        long long cardValueMultiplier = 100000000;
+        int cardIndex = 0;
+        long long cardValueMultiplier = 100000000ll;
         while((card = fgetc(file)) != ' ')
         {
             int cardValue = getCardValue(card);
             hand->stength += cardValue * cardValueMultiplier;
+
+            // first cards are worth more on the comparison criteria
             cardValueMultiplier *= 0.01;
-            hand->nOfEachCard[cardValue]++;
-            switch (hand->nOfEachCard[cardValue])
+            if(cardValue == 0) 
             {
-                case 2: 
-                    hand->stength += 10000000000ll; 
-                    break;    
-                case 3:
-                case 4:   
-                case 5:
-                    // 1 pair = 1 point    
-                    // 2 pairs => 1 pair x 2 = 2 points
-                    // 3 of a kind => 1 pair + another = 3 points
-                    // full house 1 pair and 3 of a kind => 1 + 3 = 4 points
-                    // 4 of a kind => 3 of a kind + 2 = 5 points       
-                    // 5 of a kind => 4 of a kind + 1 = 7 points
-                    hand->stength += 20000000000ll;      
-                default:    
-                    break;
+                // Joker cards will be used last
+                nJokers++;
+                continue;
             }
+            // find the higher count card so Jokers can join them
+            hand->nOfEachCard[cardValue]++;
+            if(highestCardCount < hand->nOfEachCard[cardValue])
+            {
+                highestCardCount = hand->nOfEachCard[cardValue];
+                highestCardCountIndex = cardValue;
+            }
+
+            // update strength since this card is not a Joker
+            updateHandStrength(hand, cardValue);
+        }
+
+        // use Joker cards the best possible
+        for(int i = 0; i < nJokers; i++)
+        {
+            hand->nOfEachCard[highestCardCountIndex]++;
+            updateHandStrength(hand, highestCardCountIndex);
         }
 
         // read bid
@@ -123,6 +172,7 @@ int main(int argc, char** argv)
         nHands++;
     } 
     while (fgetc(file) != EOF);
+
     // close file as it's no longer needed
     fclose(file);
 
