@@ -31,6 +31,7 @@ void cutilListAppendElement(CUTILList* list, void* data)
 
     CUTILListNode* newNode = (CUTILListNode*)malloc(sizeof(CUTILListNode));
     newNode->data = data;
+    newNode->next = NULL;
     if(list->size == 0) 
         list->head = newNode;
     else

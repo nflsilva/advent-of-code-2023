@@ -7,7 +7,7 @@ unsigned long djb2Hash(const char *str)
     int c;
     while((c = *str++))
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-    return 0;
+    return hash;
 }
 
 CUTILHashTableBucketChainNode* createBucketChainNode(const char* key, void* data)
@@ -85,7 +85,7 @@ void* cutilHashTableGetElement(CUTILHashTable* hashTable, const char* key)
     if(bucket->chain == NULL || bucket->chain->size == 0) return NULL;
 
     // key has no collisions
-    if(bucket->chain->size == 1) return bucket->chain->head->data;
+    if(bucket->chain->size == 1) return ((CUTILHashTableBucketChainNode*)cutilListGetElement(bucket->chain, 0))->data;
 
     // find the key on chain
     for(int i = 0; i < bucket->chain->size; i++) 

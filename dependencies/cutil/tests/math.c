@@ -10,5 +10,7 @@ int main()
     assert(cutilMathClipf(2.0, 1.0, 0.0) == 1.0);
     assert(cutilMathClipf(1.0, 2.0, 1.5) == 1.5);
 
+    assert(cutilMathGCD(4, 12) == 4);
+
     exit(EXIT_SUCCESS);
 }
