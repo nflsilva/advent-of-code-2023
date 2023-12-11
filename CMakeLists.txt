@@ -55,6 +55,10 @@ target_link_libraries(day-7-p2 ${LIBRARIES})
 
 add_executable(day-8-p1 source/day-8-p1.c)
 target_link_libraries(day-8-p1 ${LIBRARIES})
-
 add_executable(day-8-p2 source/day-8-p2.c)
 target_link_libraries(day-8-p2 ${LIBRARIES})
+
+add_executable(day-9-p1 source/day-9-p1.c)
+target_link_libraries(day-9-p1 ${LIBRARIES})
+add_executable(day-9-p2 source/day-9-p2.c)
+target_link_libraries(day-9-p2 ${LIBRARIES})
