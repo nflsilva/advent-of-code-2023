@@ -65,3 +65,5 @@ target_link_libraries(day-09-p2 ${LIBRARIES})
 
 add_executable(day-10-p1 source/day-10-p1.c)
 target_link_libraries(day-10-p1 ${LIBRARIES})
+add_executable(day-10-p2 source/day-10-p2.c)
+target_link_libraries(day-10-p2 ${LIBRARIES})

@@ -19,6 +19,16 @@ typedef struct
     int width, heigth; 
 } Maze_t;
 
+/**!
+ * Determines if a connection is possible based on the current position and a moviment direction.
+ * It computes this result based on the current node tile, the target tile and if the target was 
+ * already visited.
+ * @param maze a pointer to the current problem maze
+ * @param currentNode a pointer to the current position node
+ * @param deltaRow the vertical moviment direction. `-1`, `0` or `1`
+ * @param deltaColumn the horizontal moviment direction. `-1`, `0` or `1`
+ * @return `1` if there's a connection. `0` otherwise.
+*/
 int hasConnectionTo(Maze_t* maze, Node_t* currentNode, int deltaRow, int deltaColumn)
 {
     // check if current node has a connection to destination
@@ -54,6 +64,12 @@ int hasConnectionTo(Maze_t* maze, Node_t* currentNode, int deltaRow, int deltaCo
     return 1;
 }
 
+/**!
+ * Moves a given note to the first available and possible adjacent position on maze.
+ * @param maze a pointer to the current problem maze
+ * @param currentNode a pointer to the current position node
+ * @return `1` if the node moved. `0` otherwise.
+*/
 int moveNoteToNextAvailablePosition(Maze_t* maze, Node_t* currentNode)
 {                       //left, right, up, down
     int deltaRows[] =    {  0,  0, -1,  1 };
