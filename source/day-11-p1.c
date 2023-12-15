@@ -5,7 +5,7 @@
 #include "cutil/filesystem.h"
 #include "cutil/list.h"
 
-#define DEBUGa 1
+#define DEBUGa
 #define MAX_GALAXIES 1024
 
 typedef struct {
@@ -88,6 +88,7 @@ int bfs(Space_t* space, int row, int column, int startGalaxyId)
                     space->map[targetIndex] == 0) 
                 {
                     result += currentNode->distance + 1;
+                    //printf("%d -> %d : %d\n", startGalaxyId, space->galaxies[j].id, currentNode->distance + 1);
                 }
             }
 
